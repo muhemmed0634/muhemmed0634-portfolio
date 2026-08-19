@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="az">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Muhəmməd — 13 yaşında developer, reverse engineer, C & Python proqramçısı. Şəxsi portfolio saytı." />
+  <meta name="keywords" content="developer, portfolio, reverse engineering, C, Python, Linux, hacker" />
+  <meta property="og:title" content="Muhəmməd | Developer Portfolio" />
+  <meta property="og:description" content="13 yaşında developer, reverse engineer, C & Python proqramçısı." />
+  <meta property="og:type" content="website" />
+  <meta name="theme-color" content="#0d1117" />
+  <title>Muhəmməd | Developer Portfolio</title>
+  <link rel="stylesheet" href="style.css" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body>
+
+  <!-- Matrix rain background -->
+  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+
+  <!-- Noise overlay -->
+  <div class="noise-overlay" aria-hidden="true"></div>
+
+  <!-- ──────────────── NAVBAR ──────────────── -->
+  <header>
+    <nav class="navbar" id="navbar" role="navigation" aria-label="Ana menyu">
+
+      <!-- Logo -->
+      <a href="#hero" class="nav-logo" id="nav-logo" aria-label="Ana səhifəyə qayıt">
+        <span class="logo-bracket">[</span>
+        m@dev
+        <span class="logo-bracket">]</span>
+        <span class="logo-cursor" aria-hidden="true"></span>
+      </a>
+
+      <!-- Desktop nav links -->
+      <ul class="nav-links" role="list">
+        <li><a href="#about"    data-i18n="nav_about"   >Haqqımda</a></li>
+        <li><a href="#skills"   data-i18n="nav_skills"  >Bacarıqlar</a></li>
+        <li><a href="#tools"    data-i18n="nav_tools"   >Alətlər</a></li>
+
+        <li><a href="#contact"  data-i18n="nav_contact" >Əlaqə</a></li>
+      </ul>
+
+      <!-- Right side: lang + hamburger -->
+      <div class="nav-right">
+        <!-- Language switcher -->
+        <div class="lang-switcher" role="group" aria-label="Dil seçimi">
+          <button class="lang-btn active" data-lang="az" id="lang-az" title="Azərbaycan dili" aria-label="Azərbaycan dili">AZ</button>
+          <button class="lang-btn"        data-lang="en" id="lang-en" title="English"          aria-label="English">EN</button>
+          <button class="lang-btn"        data-lang="tr" id="lang-tr" title="Türkçe"           aria-label="Türkçe">TR</button>
+        </div>
+
+        <!-- Hamburger -->
+        <button class="hamburger" id="hamburger" aria-label="Menyunu aç/bağla" aria-expanded="false" aria-controls="mobile-nav">
+          <span class="ham-line"></span>
+          <span class="ham-line"></span>
+          <span class="ham-line"></span>
+        </button>
+      </div>
+    </nav>
+
+    <!-- Mobile nav -->
+    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobil menyu">
+      <a href="#about"    data-i18n="nav_about"   >Haqqımda</a>
+      <a href="#skills"   data-i18n="nav_skills"  >Bacarıqlar</a>
+      <a href="#tools"    data-i18n="nav_tools"   >Alətlər</a>
+
+      <a href="#contact"  data-i18n="nav_contact" >Əlaqə</a>
+
+      <!-- Lang switcher in mobile menu too -->
+      <div class="mobile-lang lang-switcher" role="group" aria-label="Dil seçimi">
+        <button class="lang-btn" data-lang="az" title="Azərbaycan" aria-label="Azərbaycan">AZ</button>
+        <button class="lang-btn" data-lang="en" title="English"    aria-label="English">EN</button>
+        <button class="lang-btn" data-lang="tr" title="Türkçe"     aria-label="Türkçe">TR</button>
+      </div>
+    </nav>
+  </header>
+
+  <div class="wrapper">
+
+    <!-- ──────────────── HERO ──────────────── -->
+    <section id="hero" aria-label="Hero bölməsi">
+      <!-- Grid bg decoration -->
+      <div class="hero-grid" aria-hidden="true"></div>
+
+      <div class="hero-inner">
+        <!-- Online badge -->
+        <div class="hero-badge" aria-label="Əlçatanlıq statusu">
+          <span data-i18n="about_status">🟢 Açıq işbirliyi üçün</span>
+        </div>
+
+        <!-- Prompt -->
+        <p class="hero-prompt-line" aria-hidden="true">
+          <span class="prompt-dollar">$ </span><span data-i18n="hero_prompt" style="display:inline;">whoami</span>
+        </p>
+
+        <!-- Name (big) -->
+        <h1 class="hero-name" id="hero-name" aria-label="Muhəmməd">Muhəmməd</h1>
+
+        <!-- Subtitle with typing animation -->
+        <div class="hero-subtitle-wrap" role="text" aria-live="polite">
+          <span id="hero-subtitle-text"></span>
+          <span class="typing-cursor" aria-hidden="true"></span>
+        </div>
+
+        <!-- Tagline -->
+        <p class="hero-tagline" data-i18n="hero_tagline">
+          Reverse Engineer · C &amp; Python Developer · Linux Enthusiast
+        </p>
+
+        <!-- CTA -->
+        <a href="#contact" class="hero-cta" id="hero-cta" data-i18n="hero_cta">
+          Mənimlə əlaqə
+          <span class="cta-arrow" aria-hidden="true">→</span>
+        </a>
+      </div>
+
+      <!-- Scroll hint -->
+      <div class="scroll-indicator" aria-hidden="true">
+        <div class="scroll-mouse">
+          <div class="scroll-wheel"></div>
+        </div>
+        <span>scroll</span>
+      </div>
+    </section>
+
+    <!-- ──────────────── ABOUT ──────────────── -->
+    <section id="about" aria-labelledby="about-heading">
+      <div class="section-header reveal">
+        <h2 class="section-title" id="about-heading">
+          <span class="line-num" aria-hidden="true">01</span>
+          <span data-i18n="about_title">// haqqımda</span>
+        </h2>
+        <div class="section-divider" aria-hidden="true"></div>
+        <p class="section-prompt" aria-hidden="true">
+          <span class="prompt-arrow">&gt;&gt;&gt;</span>
+          <span data-i18n="about_prompt">bio.read()</span>
+        </p>
+      </div>
+
+      <div class="about-grid">
+        <!-- Terminal window -->
+        <div class="terminal-window reveal" role="region" aria-label="Terminal pəncərəsi">
+          <div class="terminal-titlebar" aria-hidden="true">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="terminal-title">bash — muhammad@dev: ~</span>
+          </div>
+          <div class="terminal-body">
+            <div class="t-line"><span class="t-prompt">~$</span> <span class="t-cmd">cat profile.json</span></div>
+            <div class="t-line"><span class="t-output t-comment">// developer profile</span></div>
+            <div class="t-line t-blank"></div>
+            <div class="t-line"><span class="t-output">{</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"name"</span>: <span class="t-value">"Muhəmməd"</span>,</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"age"</span>: <span class="t-value">13</span>,</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"country"</span>: <span class="t-value">"Azerbaijan 🇦🇿"</span>,</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"role"</span>: <span class="t-value">"developer"</span>,</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"focus"</span>: [</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-value">"reverse-engineering"</span>,</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-value">"systems-programming"</span>,</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-value">"linux"</span></span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;],</span></div>
+            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"status"</span>: <span class="t-value">"learning 🚀"</span></span></div>
+            <div class="t-line"><span class="t-output">}</span></div>
+            <div class="t-line t-blank"></div>
+            <div class="t-line t-active-line"><span class="t-prompt">~$</span> <span class="t-cmd">_</span></div>
+          </div>
+        </div>
+
+        <!-- Bio + meta -->
+        <div class="about-text-panel">
+          <div class="about-bio reveal reveal-delay-1">
+            <span class="bio-prompt">&gt;&gt;&gt; bio.read()</span>
+            <p data-i18n="about_text">Salam! Mən Muhəmməd, 13 yaşında proqramçı və texnologiya həvəskArıyam.</p>
+          </div>
+
+          <div class="about-meta" role="list">
+            <div class="meta-item reveal reveal-delay-1" role="listitem">
+              <span data-i18n="about_location">📍 Azərbaycan</span>
+            </div>
+            <div class="meta-item reveal reveal-delay-2" role="listitem">
+              <span data-i18n="about_age">🎂 13 yaş</span>
+            </div>
+            <div class="meta-item reveal reveal-delay-3" role="listitem">
+              <span data-i18n="about_status">🟢 Açıq işbirliyi üçün</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ──────────────── SKILLS ──────────────── -->
+    <section id="skills" aria-labelledby="skills-heading">
+      <div class="section-header reveal">
+        <h2 class="section-title" id="skills-heading">
+          <span class="line-num" aria-hidden="true">02</span>
+          <span data-i18n="skills_title">// bacarıqlar</span>
+        </h2>
+        <div class="section-divider" aria-hidden="true"></div>
+        <p class="section-prompt" aria-hidden="true">
+          <span class="prompt-arrow">&gt;&gt;&gt;</span>
+          <span data-i18n="skills_prompt">skills.list()</span>
+        </p>
+      </div>
+
+      <div class="skills-grid" role="list">
+
+        <!-- Reverse Engineering -->
+        <article class="skill-card reveal" role="listitem" aria-label="Reverse Engineering bacarığı">
+          <span class="skill-icon" aria-hidden="true">🔬</span>
+          <div class="skill-name" data-i18n="skill_re">Reverse Engineering</div>
+          <div class="skill-desc" data-i18n="skill_re_desc">Proqramları analiz et, sök, anla</div>
+          <span class="skill-tag">
+            <span aria-hidden="true">&lt;</span>re<span aria-hidden="true">/&gt;</span>
+          </span>
+        </article>
+
+        <!-- C Developer -->
+        <article class="skill-card reveal reveal-delay-1" role="listitem" aria-label="C Developer bacarığı">
+          <span class="skill-icon" aria-hidden="true">⚙️</span>
+          <div class="skill-name" data-i18n="skill_c">C Developer</div>
+          <div class="skill-desc" data-i18n="skill_c_desc">Low-level sistem proqramlaşdırması</div>
+          <span class="skill-tag">
+            <span aria-hidden="true">#include</span>
+          </span>
+        </article>
+
+        <!-- Python -->
+        <article class="skill-card reveal reveal-delay-2" role="listitem" aria-label="Python Developer bacarığı">
+          <span class="skill-icon" aria-hidden="true">🐍</span>
+          <div class="skill-name" data-i18n="skill_python">Python Developer</div>
+          <div class="skill-desc" data-i18n="skill_python_desc">Skriptlər, avtomatlaşdırma, alətlər</div>
+          <span class="skill-tag">
+            <span aria-hidden="true">&gt;&gt;&gt;</span> py
+          </span>
+        </article>
+
+        <!-- Vibe Coding -->
+        <article class="skill-card reveal reveal-delay-1" role="listitem" aria-label="Vibe Coding bacarığı">
+          <span class="skill-icon" aria-hidden="true">🎨</span>
+          <div class="skill-name" data-i18n="skill_vibe">Vibe Coding</div>
+          <div class="skill-desc" data-i18n="skill_vibe_desc">Yaradıcı kod, eksperimentlər</div>
+          <span class="skill-tag">
+            <span aria-hidden="true">{ }</span> create
+          </span>
+        </article>
+
+        <!-- Linux -->
+        <article class="skill-card reveal reveal-delay-2" role="listitem" aria-label="Linux bacarığı">
+          <span class="skill-icon" aria-hidden="true">🐧</span>
+          <div class="skill-name" data-i18n="skill_linux">Linux</div>
+          <div class="skill-desc" data-i18n="skill_linux_desc">Terminal, shell, sistem idarəsi</div>
+          <span class="skill-tag">
+            <span aria-hidden="true">$</span> bash
+          </span>
+        </article>
+
+      </div>
+    </section>
+    <!-- ──────────────── TOOLS ──────────────── -->
+    <section id="tools" aria-labelledby="tools-heading">
+      <div class="section-header reveal">
+        <h2 class="section-title" id="tools-heading">
+          <span class="line-num" aria-hidden="true">03</span>
+          <span data-i18n="tools_title">// alətlər</span>
+        </h2>
+        <div class="section-divider" aria-hidden="true"></div>
+        <p class="section-prompt" aria-hidden="true">
+          <span class="prompt-arrow">&gt;&gt;&gt;</span>
+          <span data-i18n="tools_prompt">tools.list()</span>
+        </p>
+      </div>
+
+      <div class="skills-grid" role="list">
+
+        <!-- Ghidra -->
+        <article class="skill-card reveal" role="listitem" aria-label="Ghidra">
+          <span class="skill-icon" aria-hidden="true">🐉</span>
+          <div class="skill-name" data-i18n="tool_ghidra">Ghidra</div>
+          <div class="skill-desc" data-i18n="tool_ghidra_desc">Reverse Engineering Framework</div>
+          <span class="skill-tag"><span aria-hidden="true">&lt;</span>sre<span aria-hidden="true">/&gt;</span></span>
+        </article>
+
+        <!-- Antigravity -->
+        <article class="skill-card reveal reveal-delay-1" role="listitem" aria-label="Antigravity">
+          <span class="skill-icon" aria-hidden="true">🪐</span>
+          <div class="skill-name" data-i18n="tool_antigravity">Antigravity</div>
+          <div class="skill-desc" data-i18n="tool_antigravity_desc">AI Agent & IDE</div>
+          <span class="skill-tag"><span aria-hidden="true">🤖</span> ai</span>
+        </article>
+
+        <!-- IDA Free -->
+        <article class="skill-card reveal reveal-delay-2" role="listitem" aria-label="IDA Free">
+          <span class="skill-icon" aria-hidden="true">🕵️</span>
+          <div class="skill-name" data-i18n="tool_ida">IDA Free</div>
+          <div class="skill-desc" data-i18n="tool_ida_desc">Disassembler & Decompiler</div>
+          <span class="skill-tag"><span aria-hidden="true">0x</span> asm</span>
+        </article>
+
+        <!-- Visual Studio -->
+        <article class="skill-card reveal reveal-delay-1" role="listitem" aria-label="Visual Studio">
+          <span class="skill-icon" aria-hidden="true">🟪</span>
+          <div class="skill-name" data-i18n="tool_vs">Visual Studio</div>
+          <div class="skill-desc" data-i18n="tool_vs_desc">C/C++ IDE</div>
+          <span class="skill-tag"><span aria-hidden="true">{ }</span> ide</span>
+        </article>
+
+        <!-- VS Code -->
+        <article class="skill-card reveal reveal-delay-2" role="listitem" aria-label="VS Code">
+          <span class="skill-icon" aria-hidden="true">🟦</span>
+          <div class="skill-name" data-i18n="tool_vscode">VS Code</div>
+          <div class="skill-desc" data-i18n="tool_vscode_desc">Code Editor</div>
+          <span class="skill-tag"><span aria-hidden="true">/&gt;</span> editor</span>
+        </article>
+
+      </div>
+    </section>
+
+    <!-- ──────────────── CONTACT ──────────────── -->
+    <section id="contact" aria-labelledby="contact-heading">
+      <div class="section-header reveal">
+        <h2 class="section-title" id="contact-heading">
+          <span class="line-num" aria-hidden="true">04</span>
+          <span data-i18n="contact_title">// əlaqə</span>
+        </h2>
+        <div class="section-divider" aria-hidden="true"></div>
+        <p class="section-prompt" aria-hidden="true">
+          <span class="prompt-arrow">&gt;&gt;&gt;</span>
+          <span data-i18n="contact_prompt">contact.connect()</span>
+        </p>
+      </div>
+
+      <div class="contact-inner">
+        <p class="contact-subtitle reveal" data-i18n="contact_subtitle">
+          Əlaqə saxlamaq istəyirsən? Aşağıdakı kanallardan biri ilə yaz:
+        </p>
+
+        <div class="contact-links" role="list">
+
+          <!-- Email -->
+          <a href="mailto:muhemmed0634@gmail.com"
+             class="contact-link reveal"
+             id="contact-email"
+             role="listitem"
+             aria-label="E-poçt göndər: muhemmed0634@gmail.com">
+            <div class="contact-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                <polyline points="22,6 12,13 2,6"/>
+              </svg>
+            </div>
+            <div class="contact-link-info">
+              <div class="contact-link-label" data-i18n="contact_email_label">E-poçt</div>
+              <div class="contact-link-value">muhemmed0634@gmail.com</div>
+            </div>
+            <svg class="contact-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+            </svg>
+          </a>
+
+          <!-- GitHub -->
+          <a href="https://github.com/muhemmed0634"
+             target="_blank"
+             rel="noopener noreferrer"
+             class="contact-link reveal reveal-delay-1"
+             id="contact-github"
+             role="listitem"
+             aria-label="GitHub profilinə get: github.com/muhemmed0634">
+            <div class="contact-icon" aria-hidden="true">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
+              </svg>
+            </div>
+            <div class="contact-link-info">
+              <div class="contact-link-label" data-i18n="contact_github_label">GitHub</div>
+              <div class="contact-link-value">github.com/muhemmed0634</div>
+            </div>
+            <svg class="contact-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
+            </svg>
+          </a>
+
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /wrapper -->
+
+  <!-- ──────────────── FOOTER ──────────────── -->
+  <footer role="contentinfo">
+    <div class="footer-inner">
+      <p class="footer-made">
+        <span data-i18n="footer_made">made with 💻 by</span>
+        <span class="name"> Muhəmməd</span>
+      </p>
+      <p class="footer-stack" data-i18n="footer_stack">Vanilla HTML · CSS · JS</p>
+      <p class="footer-rights">
+        <span>© 2025 Muhəmməd. </span>
+        <span data-i18n="footer_rights">Bütün hüquqlar qorunur.</span>
+      </p>
+    </div>
+  </footer>
+
+  <!-- Scripts (order matters) -->
+  <script src="translations.js"></script>
+  <script src="script.js"></script>
+
+</body>
+</html>
