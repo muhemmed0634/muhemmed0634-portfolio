@@ -1,412 +1,734 @@
 <!DOCTYPE html>
-<html lang="az">
+<html lang="az" data-theme="dark">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Muhəmməd — 13 yaşında developer, reverse engineer, C & Python proqramçısı. Şəxsi portfolio saytı." />
-  <meta name="keywords" content="developer, portfolio, reverse engineering, C, Python, Linux, hacker" />
-  <meta property="og:title" content="Muhəmməd | Developer Portfolio" />
-  <meta property="og:description" content="13 yaşında developer, reverse engineer, C & Python proqramçısı." />
+  <meta name="description" content="Muhəmməd — 13-year-old Reverse Engineer & Low-Level Developer. C, Assembly, Ghidra, IDA Pro, TryHackMe." />
+  <meta name="keywords" content="reverse engineering, low-level programming, C, Assembly, TryHackMe, Ghidra, IDA Pro, binary analysis, portfolio" />
+  <meta name="author" content="Muhəmməd" />
+  <meta property="og:title" content="Muhəmməd · Reverse Engineer & Low-Level Dev" />
+  <meta property="og:description" content="13 yaşlı reverse engineer və low-level proqramçının portfolio saytı" />
   <meta property="og:type" content="website" />
-  <meta name="theme-color" content="#0d1117" />
-  <title>Muhəmməd | Developer Portfolio</title>
+  <title>Muhəmməd · Reverse Engineer &amp; Low-Level Dev</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,300;0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="style.css" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>👾</text></svg>" />
 </head>
 <body>
 
-  <!-- Matrix rain background -->
-  <canvas id="matrix-canvas" aria-hidden="true"></canvas>
+<!-- ══════════════════════════════════
+     BOOT SCREEN
+     ══════════════════════════════════ -->
+<div id="boot-screen" aria-hidden="true">
+  <div id="boot-log"></div>
+  <div id="boot-progress-bar">
+    <div class="bar-label">
+      <span data-i18n="boot_init">Initializing system kernel</span>
+      <span class="loading-dots"></span>
+    </div>
+    <div class="bar-track">
+      <div class="bar-fill" id="boot-bar-fill"></div>
+    </div>
+  </div>
+  <button id="skip-boot" class="skip-boot-btn" data-i18n="boot_skip">[ skip boot → ]</button>
+</div>
 
-  <!-- Noise overlay -->
-  <div class="noise-overlay" aria-hidden="true"></div>
-
-  <!-- ──────────────── NAVBAR ──────────────── -->
-  <header>
-    <nav class="navbar" id="navbar" role="navigation" aria-label="Ana menyu">
-
-      <!-- Logo -->
-      <a href="#hero" class="nav-logo" id="nav-logo" aria-label="Ana səhifəyə qayıt">
-        <span class="logo-bracket">[</span>
-        m@dev
-        <span class="logo-bracket">]</span>
-        <span class="logo-cursor" aria-hidden="true"></span>
-      </a>
-
-      <!-- Desktop nav links -->
-      <ul class="nav-links" role="list">
-        <li><a href="#about"    data-i18n="nav_about"   >Haqqımda</a></li>
-        <li><a href="#skills"   data-i18n="nav_skills"  >Bacarıqlar</a></li>
-        <li><a href="#tools"    data-i18n="nav_tools"   >Alətlər</a></li>
-
-        <li><a href="#contact"  data-i18n="nav_contact" >Əlaqə</a></li>
-      </ul>
-
-      <!-- Right side: lang + hamburger -->
-      <div class="nav-right">
-        <!-- Language switcher -->
-        <div class="lang-switcher" role="group" aria-label="Dil seçimi">
-          <button class="lang-btn active" data-lang="az" id="lang-az" title="Azərbaycan dili" aria-label="Azərbaycan dili">AZ</button>
-          <button class="lang-btn"        data-lang="en" id="lang-en" title="English"          aria-label="English">EN</button>
-          <button class="lang-btn"        data-lang="tr" id="lang-tr" title="Türkçe"           aria-label="Türkçe">TR</button>
+<!-- ══════════════════════════════════
+     MOUSE-FOLLOWING CYBER ROBOT
+     ══════════════════════════════════ -->
+<div id="cyber-robot" class="cyber-robot" aria-hidden="true">
+  <div class="robot-speech-bubble" id="robot-speech">
+    <span id="robot-speech-text">Ready to hack! 💻</span>
+  </div>
+  <div class="robot-body-wrap">
+    <!-- Antenna with glowing beacon -->
+    <div class="robot-antenna">
+      <div class="robot-beacon"></div>
+      <div class="robot-rod"></div>
+    </div>
+    <!-- Robot Head -->
+    <div class="robot-head">
+      <div class="robot-ears left-ear"></div>
+      <div class="robot-ears right-ear"></div>
+      <!-- Visor / Face Screen -->
+      <div class="robot-visor">
+        <div class="robot-eye left-eye" id="robot-eye-l">
+          <div class="robot-pupil"></div>
         </div>
-
-        <!-- Hamburger -->
-        <button class="hamburger" id="hamburger" aria-label="Menyunu aç/bağla" aria-expanded="false" aria-controls="mobile-nav">
-          <span class="ham-line"></span>
-          <span class="ham-line"></span>
-          <span class="ham-line"></span>
-        </button>
+        <div class="robot-eye right-eye" id="robot-eye-r">
+          <div class="robot-pupil"></div>
+        </div>
       </div>
-    </nav>
-
-    <!-- Mobile nav -->
-    <nav class="mobile-nav" id="mobile-nav" aria-label="Mobil menyu">
-      <a href="#about"    data-i18n="nav_about"   >Haqqımda</a>
-      <a href="#skills"   data-i18n="nav_skills"  >Bacarıqlar</a>
-      <a href="#tools"    data-i18n="nav_tools"   >Alətlər</a>
-
-      <a href="#contact"  data-i18n="nav_contact" >Əlaqə</a>
-
-      <!-- Lang switcher in mobile menu too -->
-      <div class="mobile-lang lang-switcher" role="group" aria-label="Dil seçimi">
-        <button class="lang-btn" data-lang="az" title="Azərbaycan" aria-label="Azərbaycan">AZ</button>
-        <button class="lang-btn" data-lang="en" title="English"    aria-label="English">EN</button>
-        <button class="lang-btn" data-lang="tr" title="Türkçe"     aria-label="Türkçe">TR</button>
+      <div class="robot-blush left-blush"></div>
+      <div class="robot-blush right-blush"></div>
+    </div>
+    <!-- Robot Body / Core -->
+    <div class="robot-torso">
+      <div class="robot-arm left-arm"></div>
+      <div class="robot-core">
+        <span class="core-symbol">&lt;/&gt;</span>
       </div>
-    </nav>
-  </header>
+      <div class="robot-arm right-arm"></div>
+    </div>
+    <!-- Thrusters / Energy Jet -->
+    <div class="robot-thruster">
+      <div class="thruster-flame"></div>
+    </div>
+  </div>
+</div>
 
-  <div class="wrapper">
+<!-- ══════════════════════════════════
+     NAVBAR
+     ══════════════════════════════════ -->
+<nav id="navbar" role="navigation" aria-label="Main navigation">
+  <div class="nav-logo">
+    <a href="#" class="logo-link">
+      <span class="prompt-char">~/</span><span class="logo-name">muhemmed</span>
+      <span class="logo-badge">x86_64</span>
+    </a>
+  </div>
 
-    <!-- ──────────────── HERO ──────────────── -->
-    <section id="hero" aria-label="Hero bölməsi">
-      <!-- Grid bg decoration -->
-      <div class="hero-grid" aria-hidden="true"></div>
+  <ul class="nav-links" id="nav-links" role="list">
+    <li><a href="#about" id="nav-about" data-i18n="nav_about">about</a></li>
+    <li><a href="#skills" id="nav-skills" data-i18n="nav_skills">skills</a></li>
+    <li><a href="#projects" id="nav-projects" data-i18n="nav_projects">projects</a></li>
+    <li><a href="#tryhackme" id="nav-tryhackme" data-i18n="nav_thm">tryhackme</a></li>
+    <li><a href="#contact" id="nav-contact" data-i18n="nav_contact">contact</a></li>
+  </ul>
 
-      <div class="hero-inner">
-        <!-- Online badge -->
-        <div class="hero-badge" aria-label="Əlçatanlıq statusu">
-          <span data-i18n="about_status">🟢 Açıq işbirliyi üçün</span>
-        </div>
+  <div class="nav-controls">
+    <!-- Language Switcher -->
+    <div class="lang-switcher" role="group" aria-label="Language Selector">
+      <button class="lang-btn active" data-lang="az" title="Azərbaycan dili">AZ</button>
+      <button class="lang-btn" data-lang="en" title="English">EN</button>
+      <button class="lang-btn" data-lang="tr" title="Türkçe">TR</button>
+      <button class="lang-btn" data-lang="ru" title="Русский">RU</button>
+    </div>
 
-        <!-- Prompt -->
-        <p class="hero-prompt-line" aria-hidden="true">
-          <span class="prompt-dollar">$ </span><span data-i18n="hero_prompt" style="display:inline;">whoami</span>
-        </p>
+    <!-- Robot Companion Toggle -->
+    <button id="robot-toggle" class="nav-icon-btn" aria-label="Toggle robot companion" title="Robot Yoldaşını Aç/Bağla">
+      <span class="robot-status-dot"></span>
+      <span class="robot-btn-icon">🤖</span>
+      <span class="robot-btn-text" data-i18n="bot_btn">BOT</span>
+    </button>
 
-        <!-- Name (big) -->
-        <h1 class="hero-name" id="hero-name" aria-label="Muhəmməd">Muhəmməd</h1>
+    <!-- Theme Toggle -->
+    <button id="theme-toggle" class="nav-theme-btn" aria-label="Toggle theme" title="Tema dəyişdir">[ light ]</button>
 
-        <!-- Subtitle with typing animation -->
-        <div class="hero-subtitle-wrap" role="text" aria-live="polite">
-          <span id="hero-subtitle-text"></span>
-          <span class="typing-cursor" aria-hidden="true"></span>
-        </div>
+    <!-- Hamburger Menu (Mobile) -->
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
-        <!-- Tagline -->
-        <p class="hero-tagline" data-i18n="hero_tagline">
-          Reverse Engineer · C &amp; Python Developer · Linux Enthusiast
-        </p>
+<!-- ══════════════════════════════════
+     MAIN
+     ══════════════════════════════════ -->
+<main>
 
-        <!-- CTA -->
-        <a href="#contact" class="hero-cta" id="hero-cta" data-i18n="hero_cta">
-          Mənimlə əlaqə
-          <span class="cta-arrow" aria-hidden="true">→</span>
+  <!-- ── HERO SECTION ────────────────── -->
+  <section id="hero" aria-label="Hero section">
+    <div class="hero-grid-bg" aria-hidden="true"></div>
+    <div class="hero-content">
+      <div class="hero-status-pill">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span data-i18n="hero_status">system.user.initialized — Arch Linux / x86_64</span>
+      </div>
+
+      <h1 class="hero-name">
+        <span data-i18n="hero_greeting">Salam, mən</span><br>
+        <span class="name-highlight">Muhəmməd</span>
+      </h1>
+
+      <div class="hero-title-line" aria-live="polite">
+        <span class="terminal-prompt-sign">&gt; </span>
+        <span id="typed-text"></span>
+        <span class="cursor" aria-hidden="true">_</span>
+      </div>
+
+      <p class="hero-desc" data-i18n="hero_desc">
+        13 yaşında reverse engineer və low-level proqramçı.<br>
+        ELF binaries, x86-64 assembly, C dili və TryHackMe otaqları — daxili sistemləri byte səviyyəsində araşdırıram.
+      </p>
+
+      <div class="hero-btns">
+        <a href="#projects" class="btn btn-primary" id="hero-btn-projects">
+          <span class="btn-icon">📂</span>
+          <span data-i18n="hero_btn_projects">$ ls ./projects</span>
+        </a>
+        <a href="#tryhackme" class="btn btn-accent" id="hero-btn-thm">
+          <span class="btn-icon">🔐</span>
+          <span data-i18n="hero_btn_thm">thm --rooms</span>
+        </a>
+        <a href="#contact" class="btn btn-secondary" id="hero-btn-contact">
+          <span class="btn-icon">💬</span>
+          <span data-i18n="hero_btn_contact">contact --me</span>
         </a>
       </div>
 
-      <!-- Scroll hint -->
-      <div class="scroll-indicator" aria-hidden="true">
-        <div class="scroll-mouse">
-          <div class="scroll-wheel"></div>
+      <div class="hero-stats">
+        <div class="stat-item">
+          <span class="stat-val">13</span>
+          <span class="stat-label" data-i18n="stat_age">yaş</span>
         </div>
-        <span>scroll</span>
-      </div>
-    </section>
-
-    <!-- ──────────────── ABOUT ──────────────── -->
-    <section id="about" aria-labelledby="about-heading">
-      <div class="section-header reveal">
-        <h2 class="section-title" id="about-heading">
-          <span class="line-num" aria-hidden="true">01</span>
-          <span data-i18n="about_title">// haqqımda</span>
-        </h2>
-        <div class="section-divider" aria-hidden="true"></div>
-        <p class="section-prompt" aria-hidden="true">
-          <span class="prompt-arrow">&gt;&gt;&gt;</span>
-          <span data-i18n="about_prompt">bio.read()</span>
-        </p>
-      </div>
-
-      <div class="about-grid">
-        <!-- Terminal window -->
-        <div class="terminal-window reveal" role="region" aria-label="Terminal pəncərəsi">
-          <div class="terminal-titlebar" aria-hidden="true">
-            <span class="dot red"></span>
-            <span class="dot yellow"></span>
-            <span class="dot green"></span>
-            <span class="terminal-title">bash — muhammad@dev: ~</span>
-          </div>
-          <div class="terminal-body">
-            <div class="t-line"><span class="t-prompt">~$</span> <span class="t-cmd">cat profile.json</span></div>
-            <div class="t-line"><span class="t-output t-comment">// developer profile</span></div>
-            <div class="t-line t-blank"></div>
-            <div class="t-line"><span class="t-output">{</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"name"</span>: <span class="t-value">"Muhəmməd"</span>,</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"age"</span>: <span class="t-value">13</span>,</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"country"</span>: <span class="t-value">"Azerbaijan 🇦🇿"</span>,</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"role"</span>: <span class="t-value">"developer"</span>,</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"focus"</span>: [</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-value">"reverse-engineering"</span>,</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-value">"systems-programming"</span>,</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;&nbsp;&nbsp;<span class="t-value">"linux"</span></span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;],</span></div>
-            <div class="t-line"><span class="t-output">&nbsp;&nbsp;<span class="t-string">"status"</span>: <span class="t-value">"learning 🚀"</span></span></div>
-            <div class="t-line"><span class="t-output">}</span></div>
-            <div class="t-line t-blank"></div>
-            <div class="t-line t-active-line"><span class="t-prompt">~$</span> <span class="t-cmd">_</span></div>
-          </div>
+        <div class="stat-item">
+          <span class="stat-val">6+</span>
+          <span class="stat-label" data-i18n="stat_tools">dil &amp; alət</span>
         </div>
-
-        <!-- Bio + meta -->
-        <div class="about-text-panel">
-          <div class="about-bio reveal reveal-delay-1">
-            <span class="bio-prompt">&gt;&gt;&gt; bio.read()</span>
-            <p data-i18n="about_text">Salam! Mən Muhəmməd, 13 yaşında proqramçı və texnologiya həvəskArıyam.</p>
-          </div>
-
-          <div class="about-meta" role="list">
-            <div class="meta-item reveal reveal-delay-1" role="listitem">
-              <span data-i18n="about_location">📍 Azərbaycan</span>
-            </div>
-            <div class="meta-item reveal reveal-delay-2" role="listitem">
-              <span data-i18n="about_age">🎂 13 yaş</span>
-            </div>
-            <div class="meta-item reveal reveal-delay-3" role="listitem">
-              <span data-i18n="about_status">🟢 Açıq işbirliyi üçün</span>
-            </div>
-          </div>
+        <div class="stat-item">
+          <span class="stat-val">THM</span>
+          <span class="stat-label" data-i18n="stat_platform">TryHackMe</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val" id="stat-streak">3+</span>
+          <span class="stat-label" data-i18n="stat_experience">il təcrübə</span>
+        </div>
+        <div class="stat-item">
+          <span class="stat-val">Arch</span>
+          <span class="stat-label" data-i18n="stat_os">Linux OS</span>
         </div>
       </div>
-    </section>
-
-    <!-- ──────────────── SKILLS ──────────────── -->
-    <section id="skills" aria-labelledby="skills-heading">
-      <div class="section-header reveal">
-        <h2 class="section-title" id="skills-heading">
-          <span class="line-num" aria-hidden="true">02</span>
-          <span data-i18n="skills_title">// bacarıqlar</span>
-        </h2>
-        <div class="section-divider" aria-hidden="true"></div>
-        <p class="section-prompt" aria-hidden="true">
-          <span class="prompt-arrow">&gt;&gt;&gt;</span>
-          <span data-i18n="skills_prompt">skills.list()</span>
-        </p>
-      </div>
-
-      <div class="skills-grid" role="list">
-
-        <!-- Reverse Engineering -->
-        <article class="skill-card reveal" role="listitem" aria-label="Reverse Engineering bacarığı">
-          <span class="skill-icon" aria-hidden="true">🔬</span>
-          <div class="skill-name" data-i18n="skill_re">Reverse Engineering</div>
-          <div class="skill-desc" data-i18n="skill_re_desc">Proqramları analiz et, sök, anla</div>
-          <span class="skill-tag">
-            <span aria-hidden="true">&lt;</span>re<span aria-hidden="true">/&gt;</span>
-          </span>
-        </article>
-
-        <!-- C Developer -->
-        <article class="skill-card reveal reveal-delay-1" role="listitem" aria-label="C Developer bacarığı">
-          <span class="skill-icon" aria-hidden="true">⚙️</span>
-          <div class="skill-name" data-i18n="skill_c">C Developer</div>
-          <div class="skill-desc" data-i18n="skill_c_desc">Low-level sistem proqramlaşdırması</div>
-          <span class="skill-tag">
-            <span aria-hidden="true">#include</span>
-          </span>
-        </article>
-
-        <!-- Python -->
-        <article class="skill-card reveal reveal-delay-2" role="listitem" aria-label="Python Developer bacarığı">
-          <span class="skill-icon" aria-hidden="true">🐍</span>
-          <div class="skill-name" data-i18n="skill_python">Python Developer</div>
-          <div class="skill-desc" data-i18n="skill_python_desc">Skriptlər, avtomatlaşdırma, alətlər</div>
-          <span class="skill-tag">
-            <span aria-hidden="true">&gt;&gt;&gt;</span> py
-          </span>
-        </article>
-
-        <!-- Vibe Coding -->
-        <article class="skill-card reveal reveal-delay-1" role="listitem" aria-label="Vibe Coding bacarığı">
-          <span class="skill-icon" aria-hidden="true">🎨</span>
-          <div class="skill-name" data-i18n="skill_vibe">Vibe Coding</div>
-          <div class="skill-desc" data-i18n="skill_vibe_desc">Yaradıcı kod, eksperimentlər</div>
-          <span class="skill-tag">
-            <span aria-hidden="true">{ }</span> create
-          </span>
-        </article>
-
-        <!-- Linux -->
-        <article class="skill-card reveal reveal-delay-2" role="listitem" aria-label="Linux bacarığı">
-          <span class="skill-icon" aria-hidden="true">🐧</span>
-          <div class="skill-name" data-i18n="skill_linux">Linux</div>
-          <div class="skill-desc" data-i18n="skill_linux_desc">Terminal, shell, sistem idarəsi</div>
-          <span class="skill-tag">
-            <span aria-hidden="true">$</span> bash
-          </span>
-        </article>
-
-      </div>
-    </section>
-    <!-- ──────────────── TOOLS ──────────────── -->
-    <section id="tools" aria-labelledby="tools-heading">
-      <div class="section-header reveal">
-        <h2 class="section-title" id="tools-heading">
-          <span class="line-num" aria-hidden="true">03</span>
-          <span data-i18n="tools_title">// alətlər</span>
-        </h2>
-        <div class="section-divider" aria-hidden="true"></div>
-        <p class="section-prompt" aria-hidden="true">
-          <span class="prompt-arrow">&gt;&gt;&gt;</span>
-          <span data-i18n="tools_prompt">tools.list()</span>
-        </p>
-      </div>
-
-      <div class="skills-grid" role="list">
-
-        <!-- Ghidra -->
-        <article class="skill-card reveal" role="listitem" aria-label="Ghidra">
-          <span class="skill-icon" aria-hidden="true">🐉</span>
-          <div class="skill-name" data-i18n="tool_ghidra">Ghidra</div>
-          <div class="skill-desc" data-i18n="tool_ghidra_desc">Reverse Engineering Framework</div>
-          <span class="skill-tag"><span aria-hidden="true">&lt;</span>sre<span aria-hidden="true">/&gt;</span></span>
-        </article>
-
-        <!-- Antigravity -->
-        <article class="skill-card reveal reveal-delay-1" role="listitem" aria-label="Antigravity">
-          <span class="skill-icon" aria-hidden="true">🪐</span>
-          <div class="skill-name" data-i18n="tool_antigravity">Antigravity</div>
-          <div class="skill-desc" data-i18n="tool_antigravity_desc">AI Agent & IDE</div>
-          <span class="skill-tag"><span aria-hidden="true">🤖</span> ai</span>
-        </article>
-
-        <!-- IDA Free -->
-        <article class="skill-card reveal reveal-delay-2" role="listitem" aria-label="IDA Free">
-          <span class="skill-icon" aria-hidden="true">🕵️</span>
-          <div class="skill-name" data-i18n="tool_ida">IDA Free</div>
-          <div class="skill-desc" data-i18n="tool_ida_desc">Disassembler & Decompiler</div>
-          <span class="skill-tag"><span aria-hidden="true">0x</span> asm</span>
-        </article>
-
-        <!-- Visual Studio -->
-        <article class="skill-card reveal reveal-delay-1" role="listitem" aria-label="Visual Studio">
-          <span class="skill-icon" aria-hidden="true">🟪</span>
-          <div class="skill-name" data-i18n="tool_vs">Visual Studio</div>
-          <div class="skill-desc" data-i18n="tool_vs_desc">C/C++ IDE</div>
-          <span class="skill-tag"><span aria-hidden="true">{ }</span> ide</span>
-        </article>
-
-        <!-- VS Code -->
-        <article class="skill-card reveal reveal-delay-2" role="listitem" aria-label="VS Code">
-          <span class="skill-icon" aria-hidden="true">🟦</span>
-          <div class="skill-name" data-i18n="tool_vscode">VS Code</div>
-          <div class="skill-desc" data-i18n="tool_vscode_desc">Code Editor</div>
-          <span class="skill-tag"><span aria-hidden="true">/&gt;</span> editor</span>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- ──────────────── CONTACT ──────────────── -->
-    <section id="contact" aria-labelledby="contact-heading">
-      <div class="section-header reveal">
-        <h2 class="section-title" id="contact-heading">
-          <span class="line-num" aria-hidden="true">04</span>
-          <span data-i18n="contact_title">// əlaqə</span>
-        </h2>
-        <div class="section-divider" aria-hidden="true"></div>
-        <p class="section-prompt" aria-hidden="true">
-          <span class="prompt-arrow">&gt;&gt;&gt;</span>
-          <span data-i18n="contact_prompt">contact.connect()</span>
-        </p>
-      </div>
-
-      <div class="contact-inner">
-        <p class="contact-subtitle reveal" data-i18n="contact_subtitle">
-          Əlaqə saxlamaq istəyirsən? Aşağıdakı kanallardan biri ilə yaz:
-        </p>
-
-        <div class="contact-links" role="list">
-
-          <!-- Email -->
-          <a href="mailto:muhemmed0634@gmail.com"
-             class="contact-link reveal"
-             id="contact-email"
-             role="listitem"
-             aria-label="E-poçt göndər: muhemmed0634@gmail.com">
-            <div class="contact-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
-                <polyline points="22,6 12,13 2,6"/>
-              </svg>
-            </div>
-            <div class="contact-link-info">
-              <div class="contact-link-label" data-i18n="contact_email_label">E-poçt</div>
-              <div class="contact-link-value">muhemmed0634@gmail.com</div>
-            </div>
-            <svg class="contact-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
-            </svg>
-          </a>
-
-          <!-- GitHub -->
-          <a href="https://github.com/muhemmed0634"
-             target="_blank"
-             rel="noopener noreferrer"
-             class="contact-link reveal reveal-delay-1"
-             id="contact-github"
-             role="listitem"
-             aria-label="GitHub profilinə get: github.com/muhemmed0634">
-            <div class="contact-icon" aria-hidden="true">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--accent-green)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/>
-              </svg>
-            </div>
-            <div class="contact-link-info">
-              <div class="contact-link-label" data-i18n="contact_github_label">GitHub</div>
-              <div class="contact-link-value">github.com/muhemmed0634</div>
-            </div>
-            <svg class="contact-arrow" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <line x1="7" y1="17" x2="17" y2="7"/><polyline points="7 7 17 7 17 17"/>
-            </svg>
-          </a>
-
-        </div>
-      </div>
-    </section>
-
-  </div><!-- /wrapper -->
-
-  <!-- ──────────────── FOOTER ──────────────── -->
-  <footer role="contentinfo">
-    <div class="footer-inner">
-      <p class="footer-made">
-        <span data-i18n="footer_made">made with 💻 by</span>
-        <span class="name"> Muhəmməd</span>
-      </p>
-      <p class="footer-stack" data-i18n="footer_stack">Vanilla HTML · CSS · JS</p>
-      <p class="footer-rights">
-        <span>© 2025 Muhəmməd. </span>
-        <span data-i18n="footer_rights">Bütün hüquqlar qorunur.</span>
-      </p>
     </div>
-  </footer>
+  </section>
 
-  <!-- Scripts (order matters) -->
-  <script src="translations.js"></script>
-  <script src="script.js"></script>
+  <!-- ── ABOUT SECTION ───────────────── -->
+  <section id="about" aria-labelledby="about-title">
+    <div class="section-header reveal">
+      <span class="section-num">01.</span>
+      <h2 class="section-title" id="about-title" data-i18n="about_title">haqqımda</h2>
+      <div class="section-line" aria-hidden="true"></div>
+    </div>
 
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <p data-i18n="about_p1">
+          <strong>Salam!</strong> Mənim adım Muhəmməddir, 13 yaşım var.
+          Proqramlaşdırmaya 11 yaşımda <strong>Python</strong> ilə başladım, daha sonra bir müddət oyun kodlaşdırması ilə məşğul oldum.
+          Sonradan oyun tərtibatını buraxaraq birbaşa <strong>reverse engineering</strong> və <strong>low-level programming</strong> dünyasına keçid etdim.
+          Məni ən çox <em>"kompüter bu kodu maşın səviyyəsində necə icra edir?"</em> sualı maraqlandırır.
+        </p>
+        <p data-i18n="about_p2">
+          Kompilyasiya olunmuş ikili faylları (binaries) parçalamağı, <strong>C</strong> və <strong>Assembly</strong>-də
+          yazılmış proqramların daxili mexanizmini və yaddaş arxitekturasını dərindən başa düşməyi sevirəm.
+          <strong>Ghidra</strong> və <strong>IDA Pro</strong> gündəlik analiz alətlərimdir.
+        </p>
+        <p data-i18n="about_p3">
+          Boş vaxtlarımda <strong>TryHackMe</strong> platformasında xüsusilə Reverse Engineering,
+          Linux Privilege Escalation və Network Reconnaissance otaqlarını həll edirəm. Hər problem mənim üçün yeni bir tapmaca və öyrənmə mənbəyidir.
+        </p>
+
+        <div class="about-facts">
+          <div class="fact-item">
+            <span class="fact-key">// focus</span>
+            <span data-i18n="about_fact_focus">Reverse Engineering, Binary Analysis, Exploit Research</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-key">// tools</span>
+            <span>Ghidra, IDA Pro, GDB (pwndbg), radare2, nmap, Wireshark</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-key">// langs</span>
+            <span>C, C++, Assembly (x86/x64), Python, Bash</span>
+          </div>
+          <div class="fact-item">
+            <span class="fact-key">// os</span>
+            <span>Arch Linux (rolling release, pure terminal workflow)</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="about-card-col reveal">
+        <div class="terminal-card">
+          <div class="terminal-card-bar">
+            <span class="dot dot-r"></span>
+            <span class="dot dot-y"></span>
+            <span class="dot dot-g"></span>
+            <span class="terminal-card-title">sysinfo.sh</span>
+          </div>
+          <div class="terminal-card-body">
+            <div class="tc-line"><span class="tc-prompt">❯</span> <span class="tc-cmd">uname -a</span></div>
+            <div class="tc-out">Linux arch 6.10.x-arch1-1 #1 SMP PREEMPT_DYNAMIC x86_64 GNU/Linux</div>
+            
+            <div class="tc-line" style="margin-top:0.75rem"><span class="tc-prompt">❯</span> <span class="tc-cmd">cat /proc/target_info</span></div>
+            <div class="tc-out">
+              User:        muhemmed<br>
+              Age:         13<br>
+              Field:       Reverse Engineering &amp; Low-Level<br>
+              Architecture: x86_64 / ELF64<br>
+              Disassembler: Ghidra 11.x / IDA Pro 8.x<br>
+              Status:      Active learning &amp; building
+            </div>
+            
+            <div class="tc-line" style="margin-top:0.75rem"><span class="tc-prompt">❯</span> <span class="tc-cmd">uptime</span></div>
+            <div class="tc-out" id="uptime-out">1000+ days coding streak</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SKILLS SECTION ──────────────── -->
+  <section id="skills" aria-labelledby="skills-title">
+    <div class="section-header reveal">
+      <span class="section-num">02.</span>
+      <h2 class="section-title" id="skills-title" data-i18n="skills_title">bacarıqlar</h2>
+      <div class="section-line" aria-hidden="true"></div>
+    </div>
+
+    <div class="skills-grid">
+      <!-- Low-Level & Systems -->
+      <div class="skill-category reveal">
+        <div class="skill-cat-title">
+          <span class="icon">⚙️</span>
+          <span data-i18n="skill_cat_lowlevel">Low-Level &amp; Proqramlaşdırma</span>
+        </div>
+        <div class="skill-bars">
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span>C Programming</span><span class="skill-bar-pct">88%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-green" data-pct="88"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span>Assembly (x86 / x86-64)</span><span class="skill-bar-pct">80%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-green" data-pct="80"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span>C++</span><span class="skill-bar-pct">75%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-green" data-pct="75"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span>Python (Scripting &amp; Exploitation)</span><span class="skill-bar-pct">82%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-green" data-pct="82"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Reverse Engineering -->
+      <div class="skill-category reveal">
+        <div class="skill-cat-title">
+          <span class="icon">🔍</span>
+          <span data-i18n="skill_cat_re">Reverse Engineering Alətləri</span>
+        </div>
+        <div class="skill-bars">
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span>Ghidra</span><span class="skill-bar-pct">86%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-purple" data-pct="86"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span>IDA Pro</span><span class="skill-bar-pct">78%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-purple" data-pct="78"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span>GDB / pwndbg</span><span class="skill-bar-pct">75%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-purple" data-pct="75"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span>radare2 / cutter</span><span class="skill-bar-pct">68%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-purple" data-pct="68"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Security & TryHackMe -->
+      <div class="skill-category reveal">
+        <div class="skill-cat-title">
+          <span class="icon">🔐</span>
+          <span data-i18n="skill_cat_sec">Təhlükəsizlik &amp; TryHackMe</span>
+        </div>
+        <div class="skill-bars">
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span data-i18n="skill_bar_binanalysis">Binary &amp; ELF Analizi</span><span class="skill-bar-pct">84%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-cyan" data-pct="84"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span data-i18n="skill_bar_privesc">Linux Privilege Escalation</span><span class="skill-bar-pct">78%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-cyan" data-pct="78"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span data-i18n="skill_bar_recon">Şəbəkə Kəşfiyyatı (Nmap / Wireshark)</span><span class="skill-bar-pct">80%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-cyan" data-pct="80"></div>
+            </div>
+          </div>
+          <div class="skill-bar-item">
+            <div class="skill-bar-label">
+              <span data-i18n="skill_bar_bof">Stack &amp; Yaddaş Mexanizmləri</span><span class="skill-bar-pct">72%</span>
+            </div>
+            <div class="skill-bar-track">
+              <div class="skill-bar-fill fill-cyan" data-pct="72"></div>
+            </div>
+          </div>
+        </div>
+        <div class="skill-tags">
+          <span class="skill-tag">ELF Disassembly</span>
+          <span class="skill-tag">x86 Registers</span>
+          <span class="skill-tag">SUID Exploitation</span>
+          <span class="skill-tag">Nmap NSE</span>
+          <span class="skill-tag">GDB Memory Inspection</span>
+          <span class="skill-tag">TryHackMe</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PROJECTS SECTION ────────────── -->
+  <section id="projects" aria-labelledby="projects-title">
+    <div class="section-header reveal">
+      <span class="section-num">03.</span>
+      <h2 class="section-title" id="projects-title" data-i18n="projects_title">layihələr</h2>
+      <div class="section-line" aria-hidden="true"></div>
+    </div>
+
+    <p class="projects-intro reveal">
+      <span class="live-dot" aria-hidden="true"></span>
+      <span data-i18n="projects_subtitle">GitHub profilindən canlı çəkilən seçilmiş repolar</span>
+    </p>
+
+    <div id="projects-grid" role="list" aria-live="polite" aria-label="GitHub projects">
+      <div class="projects-loading">
+        <span class="loading-dots" data-i18n="loading_github">GitHub API-dən repolar yüklənir</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── TRYHACKME SECTION ───────────── -->
+  <section id="tryhackme" aria-labelledby="thm-title">
+    <div class="section-header reveal">
+      <span class="section-num">04.</span>
+      <h2 class="section-title" id="thm-title" data-i18n="thm_title">TryHackMe otaqları &amp; analizlər</h2>
+      <div class="section-line" aria-hidden="true"></div>
+    </div>
+
+    <p class="section-subtext reveal" data-i18n="thm_subtitle">
+      TryHackMe platformasında həll etdiyim otaqlar, analiz metodologiyaları və praktiki qeydlər
+    </p>
+
+    <!-- THM Profile Banner -->
+    <div class="thm-banner reveal">
+      <div class="thm-banner-left">
+        <div class="thm-badge-icon">🔐</div>
+        <div class="thm-banner-info">
+          <div class="thm-banner-tag">TRYHACKME RESEARCHER</div>
+          <div class="thm-banner-name">muhemmed · Reverse Engineering &amp; PrivEsc Track</div>
+          <div class="thm-banner-meta">
+            <span>🛡️ <strong data-i18n="thm_focus_label">Fokus:</strong> Reverse Engineering, ELF, Linux PrivEsc, Nmap</span>
+            <span>⚡ <strong data-i18n="thm_env_label">Mühit:</strong> Arch Linux + Ghidra + GDB</span>
+          </div>
+        </div>
+      </div>
+      <div class="thm-banner-right">
+        <a href="https://tryhackme.com" target="_blank" rel="noopener noreferrer" class="btn btn-sm btn-accent">
+          <span>TryHackMe ↗</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- THM Rooms Grid -->
+    <div class="thm-rooms-grid">
+
+      <!-- Room 1: Reversing ELF -->
+      <article class="thm-card reveal" tabindex="0">
+        <div class="thm-card-header">
+          <div class="thm-cat-badge badge-re">REVERSE ENGINEERING</div>
+          <span class="thm-difficulty diff-med" data-i18n="diff_medium">MEDIUM</span>
+        </div>
+        <h3 class="thm-room-name">TryHackMe — Reversing ELF</h3>
+        <p class="thm-room-desc" data-i18n="thm_desc_elf">
+          Linux x86 və x86-64 arxitekturası üçün hazırlanmış 8 fərqli ELF ikili faylının (crackme) Ghidra və GDB ilə tərsinə mühəndisliyi.
+          Strings ekstraksiyası, hardcoded şifrələrin aşkarlanması və `jnz`/`jz` şərti keçid instruksiyalarının patch edilməsi.
+        </p>
+        <div class="thm-tech-tags">
+          <span class="ttag">Ghidra</span>
+          <span class="ttag">GDB</span>
+          <span class="ttag">strings</span>
+          <span class="ttag">ltrace</span>
+          <span class="ttag">Assembly</span>
+        </div>
+        <div class="thm-card-footer">
+          <button class="thm-read-btn" data-room="reversing-elf" data-i18n="thm_btn_inspect">
+            <span>// Analizə bax ↗</span>
+          </button>
+          <a href="https://tryhackme.com/room/reversingelf" target="_blank" rel="noopener" class="thm-link">
+            <span>Otaq linki ↗</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Room 2: Linux Privilege Escalation -->
+      <article class="thm-card reveal" tabindex="0">
+        <div class="thm-card-header">
+          <div class="thm-cat-badge badge-privesc">PRIVILEGE ESCALATION</div>
+          <span class="thm-difficulty diff-med" data-i18n="diff_medium">MEDIUM</span>
+        </div>
+        <h3 class="thm-room-name">TryHackMe — Linux PrivEsc</h3>
+        <p class="thm-room-desc" data-i18n="thm_desc_privesc">
+          Aşağı səlahiyyətli istifadəçidən `root` hüquqlarına yüksəlmə metodları.
+          Səhv konfiqurasiya edilmiş SUID fayllarının analizi, sudo icazələri olmadan istifadə edilə bilən komandalar,
+          LD_PRELOAD inyeksiyaları və mühit dəyişənlərinin (PATH hijacking) manipulyasiyası.
+        </p>
+        <div class="thm-tech-tags">
+          <span class="ttag">SUID Binaries</span>
+          <span class="ttag">LinPEAS</span>
+          <span class="ttag">GTFOBins</span>
+          <span class="ttag">Cron Jobs</span>
+          <span class="ttag">Root Shell</span>
+        </div>
+        <div class="thm-card-footer">
+          <button class="thm-read-btn" data-room="linux-privesc" data-i18n="thm_btn_inspect">
+            <span>// Analizə bax ↗</span>
+          </button>
+          <a href="https://tryhackme.com/room/linuxprivesc" target="_blank" rel="noopener" class="thm-link">
+            <span>Otaq linki ↗</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Room 3: Advent of Cyber & Nmap Recon -->
+      <article class="thm-card reveal" tabindex="0">
+        <div class="thm-card-header">
+          <div class="thm-cat-badge badge-recon">NETWORK RECON</div>
+          <span class="thm-difficulty diff-easy" data-i18n="diff_easy">EASY / MED</span>
+        </div>
+        <h3 class="thm-room-name">TryHackMe — Nmap &amp; Network Recon</h3>
+        <p class="thm-room-desc" data-i18n="thm_desc_nmap">
+          Hədəf şəbəkələrin və xidmətlərin dərin analizi. TCP SYN stealth scan (-sS), UDP scan (-sU),
+          xidmət versiya müəyyənləşdirilməsi (-sV), firewall filtrasiyalarının aşılması və
+          Nmap Scripting Engine (NSE) skriptləri vasitəsilə zəifliklərin aşkarlanması.
+        </p>
+        <div class="thm-tech-tags">
+          <span class="ttag">Nmap CLI</span>
+          <span class="ttag">NSE Scripts</span>
+          <span class="ttag">SYN Stealth</span>
+          <span class="ttag">Wireshark</span>
+          <span class="ttag">Port Audit</span>
+        </div>
+        <div class="thm-card-footer">
+          <button class="thm-read-btn" data-room="nmap-recon" data-i18n="thm_btn_inspect">
+            <span>// Analizə bax ↗</span>
+          </button>
+          <a href="https://tryhackme.com/room/furthernmap" target="_blank" rel="noopener" class="thm-link">
+            <span>Otaq linki ↗</span>
+          </a>
+        </div>
+      </article>
+
+      <!-- Room 4: Intro to x86-64 / Stack Architecture -->
+      <article class="thm-card reveal" tabindex="0">
+        <div class="thm-card-header">
+          <div class="thm-cat-badge badge-bof">MEMORY &amp; STACK</div>
+          <span class="thm-difficulty diff-hard" data-i18n="diff_hard">HARD</span>
+        </div>
+        <h3 class="thm-room-name">TryHackMe — Intro to x86-64 Architecture</h3>
+        <p class="thm-room-desc" data-i18n="thm_desc_x86">
+          Kompüter yaddaşının stek (stack) strukturunun dərindən öyrənilməsi. Registerlər (RAX, RBX, RSP, RBP, RIP),
+          funksiya çağırış mexanizmləri (cdecl, System V AMD64 ABI), stek çərçivələrinin formalaşması və yaddaş xətalarının təməl prinsipləri.
+        </p>
+        <div class="thm-tech-tags">
+          <span class="ttag">x86-64 ABI</span>
+          <span class="ttag">Stack Frames</span>
+          <span class="ttag">Registers</span>
+          <span class="ttag">pwndbg</span>
+          <span class="ttag">Memory Layout</span>
+        </div>
+        <div class="thm-card-footer">
+          <button class="thm-read-btn" data-room="intro-x86" data-i18n="thm_btn_inspect">
+            <span>// Analizə bax ↗</span>
+          </button>
+          <a href="https://tryhackme.com/room/introtox8664" target="_blank" rel="noopener" class="thm-link">
+            <span>Otaq linki ↗</span>
+          </a>
+        </div>
+      </article>
+
+    </div>
+  </section>
+
+  <!-- ── CONTACT SECTION ─────────────── -->
+  <section id="contact" aria-labelledby="contact-title">
+    <div class="section-header reveal">
+      <span class="section-num">05.</span>
+      <h2 class="section-title" id="contact-title" data-i18n="contact_title">əlaqə</h2>
+      <div class="section-line" aria-hidden="true"></div>
+    </div>
+
+    <div class="contact-inner">
+      <div class="contact-text reveal">
+        <p data-i18n="contact_p1">
+          Layihələr, reverse engineering müzakirələri və ya təhlükəsizlik alətləri ilə bağlı əməkdaşlıq üçün
+          aşağıdakı rəsmi kanallardan əlaqə saxlaya bilərsiniz.
+        </p>
+        <p>
+          <code class="code-comment" data-i18n="contact_secure">// şəxsi məlumat paylaşılmır · Yalnız təsdiqlənmiş platformalar</code>
+        </p>
+      </div>
+
+      <div class="contact-links reveal">
+        <!-- GitHub Link -->
+        <a
+          href="https://github.com/muhemmed0634"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-link-item"
+          id="contact-github"
+          aria-label="GitHub profili"
+        >
+          <span class="cli-icon">⌥</span>
+          <div class="cli-info">
+            <div class="cli-label">GitHub</div>
+            <div class="cli-text">github.com/muhemmed0634</div>
+            <div class="cli-sub" data-i18n="contact_gh_sub">Mənbə kodlar və alətlər</div>
+          </div>
+          <span class="cli-arr">→</span>
+        </a>
+
+        <!-- Discord Server Link -->
+        <a
+          href="https://discord.gg/xKfszmwjXx"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="contact-link-item"
+          id="contact-discord-server"
+          aria-label="Discord Serveri"
+        >
+          <span class="cli-icon">#</span>
+          <div class="cli-info">
+            <div class="cli-label">Discord Server</div>
+            <div class="cli-text">discord.gg/xKfszmwjXx</div>
+            <div class="cli-sub" data-i18n="contact_dc_server_sub">İcma və müzakirə serveri</div>
+          </div>
+          <span class="cli-arr">→</span>
+        </a>
+
+        <!-- Discord Direct Username -->
+        <div class="contact-link-item copyable" id="contact-discord-user" role="button" tabindex="0" title="Kopyalamaq üçün klikləyin">
+          <span class="cli-icon">🎮</span>
+          <div class="cli-info">
+            <div class="cli-label">Discord Username</div>
+            <div class="cli-text font-bold"><span id="dc-username-text">maki07625</span></div>
+            <div class="cli-sub" id="dc-copy-hint" data-i18n="contact_copy_hint">Kliklə və adı kopyala 📋</div>
+          </div>
+          <span class="cli-arr copy-icon">📋</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ══════════════════════════════════
+     WRITE-UP MODAL (TRYHACKME NOTES)
+     ══════════════════════════════════ -->
+<div id="thm-modal" class="modal-backdrop" aria-hidden="true" role="dialog" aria-modal="true">
+  <div class="modal-dialog">
+    <div class="modal-header">
+      <div class="modal-dots">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+      </div>
+      <div class="modal-title" id="modal-title">writeup_viewer.sh</div>
+      <button class="modal-close" id="modal-close" aria-label="Bağla">✕</button>
+    </div>
+    <div class="modal-body" id="modal-content">
+      <!-- Injected via JavaScript -->
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════
+     TERMINAL WIDGET
+     ══════════════════════════════════ -->
+<div id="terminal-widget" role="complementary" aria-label="Interactive terminal">
+  <div id="terminal-window" aria-live="polite">
+    <div class="term-bar">
+      <span class="dot dot-r"></span>
+      <span class="dot dot-y"></span>
+      <span class="dot dot-g"></span>
+      <span class="term-bar-title">bash — muhemmed@arch:~/portfolio</span>
+      <button class="term-close" id="term-close" aria-label="Close terminal">✕</button>
+    </div>
+    <div id="term-output" aria-live="polite" aria-label="Terminal output"></div>
+    <div class="term-input-row">
+      <span class="term-prompt-sym">visitor@portfolio:~$</span>
+      <input
+        type="text"
+        id="term-input"
+        autocomplete="off"
+        spellcheck="false"
+        placeholder="type 'help' or 'whoami' ..."
+        aria-label="Terminal input"
+      />
+    </div>
+  </div>
+  <button id="terminal-fab" aria-label="Open terminal" title="Mini terminal aç">
+    <span class="fab-icon">&gt;_</span>
+    <span class="fab-label">TERMINAL</span>
+  </button>
+</div>
+
+<!-- ══════════════════════════════════
+     FOOTER
+     ══════════════════════════════════ -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-left">
+      <span class="footer-prompt">muhemmed@arch:~$</span>
+      <span data-i18n="footer_title">reverse engineering &amp; low-level development</span>
+    </div>
+    <div class="footer-right">
+      <span>Built with <span class="heart-pulse">♥</span> &amp; Vanilla JS</span> ·
+      <a href="https://github.com/muhemmed0634" target="_blank" rel="noopener">GitHub</a> ·
+      <a href="https://discord.gg/xKfszmwjXx" target="_blank" rel="noopener">Discord</a>
+    </div>
+  </div>
+</footer>
+
+<script src="script.js"></script>
 </body>
 </html>
